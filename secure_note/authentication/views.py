@@ -39,13 +39,13 @@ class RegistrationView(View):
         message=""
         if not (validate_password(requests.POST.get("password1"))):
             message = "The password is invalid\nMake sure it has captial and small letter with number and special character"
-        elif requests.POST.get("password1") == requests.POST.get("password2"):
+        elif requests.POST.get("password1") != requests.POST.get("password2"):
             message = "The password are not the same"
-        elif requests.POST.get["email"] == "":
+        elif requests.POST.get("email") == "":
             message = "Email field can not be empty"
-        elif requests.POST.get["firstname"] == "":
+        elif requests.POST.get("firstname") == "":
             message = "First name can not be empty"
-        elif requests.POST.get["lastname"] == "":
+        elif requests.POST.get("lastname") == "":
             message = "Last name can not be empty"
         else:
             try:
@@ -98,6 +98,7 @@ class UpdateView(LoginRequiredMixin,View):
             user.first_name = requests.POST.get("firstname")
             user.last_name = requests.POST.get("lastname")
             user.email = requests.POST.get("email")
+            profile = requests.FILES['profile_picture']
             user.save()
             return HttpResponseRedirect(reverse("note:index",))
         except:

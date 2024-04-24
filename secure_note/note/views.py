@@ -29,17 +29,17 @@ class SaveFile(LoginRequiredMixin,View):
                 raise FileExistsError()
             except FileExistsError:
                 m = temp
-                m.content = file_content
-                m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(m.content)
-                m.md5_hash = cryptoengine.MessageDigest.md5_hash(m.content)
+                m.content = file_content.encode()
+                m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
+                m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
                 m.save()
             except:
                 m = FileModel()
                 m.name = file_name
-                m.content = file_content
+                m.content = file_content.encode()
                 m.user = requests.user
-                m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(m.content)
-                m.md5_hash = cryptoengine.MessageDigest.md5_hash(m.content)
+                m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
+                m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
                 m.save()
             return HttpResponseRedirect(reverse("note:file_display",args = (file_name,)))
 

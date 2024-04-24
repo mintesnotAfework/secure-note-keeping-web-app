@@ -31,6 +31,10 @@
             <h2 class="title">Update Profile</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
+              <input type="file" placeholder="Profile Picture" name="profile_picture" lable="profile picture" value={{user.profile_picture}} accept="image/*" required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
               <input type="text" placeholder="Firstname" name="firstname" lable="First name" value={{user.firstname}} required />
             </div>
             <div class="input-field">
