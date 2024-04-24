@@ -4,7 +4,9 @@ from django.contrib.auth.models import User
 
 # Create your models here.
 class FileModel(models.Model):
-    user = models.ForeignKey(User,on_delete=models.CASCADE,related_name="user")
+    user = models.ForeignKey(User,on_delete=models.CASCADE)
     name = models.CharField(max_length=64)
-    content = models.CharField(max_length=10000)
+    content = models.BinaryField()
     date_time = models.DateTimeField(default=now)
+    sha512_hash = models.BinaryField()
+    md5_hash = models.BinaryField()

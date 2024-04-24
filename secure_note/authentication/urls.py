@@ -4,11 +4,11 @@ from . import views
 
 app_name = "authentication"
 urlpatterns = [
-    path("",views.index,name="index"),
-    path("login/",views.login_view,name="login"),
-    path("logout/",views.logout_views,name="logout"),
-    path("register/",views.register,name="register"),
-    path("password_reset/",views.password_reset,name="password_reset"),
-    path("update/",views.update,name="update"),
+    path("",views.Index.as_view(),name="index"),
+    path("login/",views.LoginView.as_view(),name="login"),
+    path("logout/",views.LogoutView.as_view(),name="logout"),
+    path("register/",views.RegistrationView.as_view(),name="register"),
+    path("password_reset/",views.PasswordRestView.as_view(),name="password_reset"),
+    path("update/",views.UpdateView.as_view(),name="update"),
 ]
 

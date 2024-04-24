@@ -24,6 +24,7 @@ urlpatterns = [
     # path('admin/', admin.site.urls,name="admin"),
     path('',include('authentication.urls'),name="index"),
     path("note/",include("note.urls"),name="note"),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 
 
-urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT)
+urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) #static file addition from the setting file indjango 
+urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) #media file addition from the setting file indjango 
