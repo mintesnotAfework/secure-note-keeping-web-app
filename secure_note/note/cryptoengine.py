@@ -23,14 +23,19 @@ class MessageDigest:
 
 class RSACryptography:
     @staticmethod
-    def key_generation(filename:str) -> None:
+    def key_generation(filename:str) -> bool:
         public,private = rsa.newkeys(2048)
         root_filepath= "/vol/web/static/password_rsa/"
         file_path = root_filepath + filename
-        with open(file_path + "/cryptography_file_for_server.public","wb") as f:
-            f.write(public.save_pkcs1("PEM"))
-        with open(file_path + "/cryptography_file_for_server.private","wb") as f:
-            f.write(private.save_pkcs1("PEM"))
+        if not os.path.exists(file_path):
+            os.makedirs(file_path)
+            with open(file_path + "/cryptography_file_for_server.public","wb") as f:
+                f.write(public.save_pkcs1("PEM"))
+            with open(file_path + "/cryptography_file_for_server.private","wb") as f:
+                f.write(private.save_pkcs1("PEM"))
+            return True
+        else:
+            return False
 
     @staticmethod
     def encryption(filename : str,message:bytes) -> bytes:
