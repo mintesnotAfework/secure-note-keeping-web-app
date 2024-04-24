@@ -10,7 +10,7 @@ RUN chmod 755 /vol/static
 RUN mkdir -p /etc/nginx/ssl
 RUN chmod 700 /etc/nginx/ssl
 
-RUN openssl req -x509 -newKey rsa:4096 -nodes -k
+RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/secure_note.key -out /etc/nginx/ssl/secure_note.crt
 
 RUN apk del .tmp
 USER nginx
