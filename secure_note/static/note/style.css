@@ -1,0 +1,227 @@
+body {
+    background-color: white;
+    font-family: sans-serif;
+    margin: 0;
+    display: flex;
+    min-height: 100vh;
+}
+
+.app-title {
+    margin: 0;
+    flex-grow: 1; /* Make title fill remaining space */
+    text-align: center; /* Center align title */
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem;
+}
+
+#menu-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0.5rem;
+}
+
+#logout-button {
+    font-size: 1 rem;
+    background-color: #3498db; /* Transparent background */
+    border: black   ;
+    color: white; /* Light gray color */
+    padding: 1rem;
+    cursor: pointer;
+    position: absolute; /* Absolute positioning for top right corner */
+    top: 1rem; /* Adjust spacing from top */
+    right: 1rem; /* Adjust spacing from right */
+    border-radius: 10px;
+}
+  
+#logout-button:hover {
+    background-color: red; /* White text on hover */
+
+}
+  
+.bar {
+    display: block;
+    height: 3px;
+    width: 20px;
+    background-color: black;
+    margin-bottom: 5px;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    padding: 1rem; /* Add padding for better spacing */
+}
+
+.user-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%; /* Make the image a circle */
+    margin-right: 10px; /* Add spacing between image and name */
+}
+
+#user-name {
+    font-weight: bold; /* Make the name slightly bolder */
+}
+
+nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 250px;
+    background-color: #3498db; /* Light blue */
+    color: white;
+    padding: 1rem;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease-in-out;
+}
+
+.note-list {
+    list-style: none;
+    padding: 0;
+    margin: 1rem 0; /* Add margin for better spacing */
+}
+
+nav li {
+    padding: 10%;
+    margin-bottom: 1rem;
+    font-size: 1rem;
+    border-radius: 5%;
+    border-color: black;
+}
+
+nav a {
+    color: white;
+    text-decoration: none;
+}
+
+nav a:hover {
+    color: #ecf0f1;
+}
+nav li:hover{
+    background-color: #00436f;
+}
+
+#create-note {
+    background-color: #00436f;
+    color: white;
+    border: none;
+    padding: 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 1rem; /* Add margin for spacing */
+}
+#create-note:hover{
+    background-color : green;
+}
+
+#hide-button {
+    background-color: transparent; /* Transparent background */
+    color: #ccc; /* Light gray color */
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 1rem; /* Add margin for spacing */
+}
+
+#hide-button:hover {
+    color: white; /* White text on hover */
+}
+
+.content {
+    flex-grow: 1;
+    padding: 1rem;
+}
+
+#note-content {
+    width: 100%;
+    height: calc(100vh - 240px); /* Account for header, buttons, and user info */
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+    resize: none; /* Prevent textarea resizing */
+}
+#note-title{
+    padding: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 20px;
+    resize: none;
+}
+
+.actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    position: absolute; /* Position buttons at bottom */
+    bottom: 1rem; /* Adjust spacing from bottom */
+    left: 1rem; /* Adjust spacing from left */
+    width: calc(100% - 2rem); /* Account for margins */
+}
+
+.actions button {
+    font-size: 1rem;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    background-color: #3498db; /* Light blue */
+    color: white;
+}
+
+.actions button:hover {
+    background-color: #2980b9; /* Darker blue on hover */
+}
+
+#edit-note, #delete-note {
+    font-size: 1rem;
+    background-color: green; /* Disabled buttons have lighter background */
+    cursor: default;
+}
+#edit-note:hover{
+    background-color: rgb(46, 46, 46);
+    color : white;
+}
+#delete-note:hover{
+    background-color: red;
+    color : white;
+}
+
+/* Optional styling for a cleaner look */
+.container {
+    border-radius: 5px; /* Add a subtle border-radius to the container */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+.sidebar {
+    border-right: 1px solid #ddd; /* Add a border to separate sidebar */
+}
+
+.blurred {
+    filter: blur(5px); /* Adjust blur amount as desired */
+  }
+
+  
+#navigation.active {
+    transform: translateX(0); /* Show sidebar on click */
+    .content {
+        opacity: 0.5;
+        filter: blur(5px);
+      }
+}
+
+/* Style for hiding content (can be customized) */
+.hidden {
+  opacity: 0;
+  display: none; /* Make navigation invisible */
+  transition: opacity 0.3s ease-in-out; /* Smooth transition */
+  /* Optional: Add other styles for hidden state (e.g., display: none;) */
+}

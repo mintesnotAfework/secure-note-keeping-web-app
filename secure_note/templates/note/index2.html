@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Secure Note Keeper</title>
+    <link rel="stylesheet" href="{% static 'note/style.css' %}">
+</head>
+<body>
+    <header>
+        <button id="menu-button">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </button>
+        <h1 class="app-title">Secure Note Keeper</h1>
+    </header>
+    <nav id="navigation">
+        <div class="user-info">
+            <a href="{% url 'authentication:update' %}">
+                <img src="/medias/profile/default/default.png" alt="" class="user-icon">
+                <span id="user-name">{{request.user.username}}</span>
+            </a>
+        </div>
+        <ul class="note-list">
+            {% if list_of_file %}
+                {% for item in list_of_file %}
+                <a href="{% url 'note:file_display' item.name %}">
+                    <li>{{ item.name }}</li>
+                </a>
+                {% empty %}
+                    <li> No Note </li>
+                {% endfor %}
+            {% endif %}
+        </ul>
+        <a href="{% url 'note:index' %}">
+            <button id="create-note">Create Note</button>
+        </a>
+        <button id="hide-button">Hide panel</button>
+        <a href="{% url 'authentication:logout' %}" id="logout-button">
+            Logout
+        </a>
+    </nav>
+    <div class="content">
+        <form action="{% url 'note:save' %}" method="post">
+            {% csrf_token %}
+            <textarea id="note-title" placeholder="Write your note name..." name="filename"  required>{{file.name}}</textarea>
+            <textarea id="note-content" placeholder="Write your note here..." name="filecontent" required>{{file.content}}</textarea>
+            <div class="actions">
+            <button id="save-note">Save Note</button>
+            </form>
+            <form action="{% url 'note:delete' file.name %}" method="post">
+                {% csrf_token %}
+                <button id="delete-note">Delete Note</button>
+            </form>
+        </div>
+    </div>
+    <script src="{% static 'note/script.js' %}"></script>
+</body>
+</html>

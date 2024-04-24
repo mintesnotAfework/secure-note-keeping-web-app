@@ -1,0 +1,34 @@
+services:
+  secure_note:
+    build:
+      context: .
+    volumes:
+      - static_data:/vol/web
+    environment:
+      - SECRET_KEY=SAMPLEKEY
+    depends_on:
+      - pgdb
+  
+  pgdb:
+        image: postgres:alpine
+        container_name: pgdb
+        environment:
+            - POSTGRES_DB=postgres
+            - POSTGRES_USER=postgres
+            - POSTGRES_PASSWORD=postgres
+        volumes:
+            - pgdata:/var/lib/postgresql/data
+  
+  proxy:
+    build:
+      context: ./proxy
+    volumes:
+      - static_data:/vol/static
+    ports:
+      - "443:443"
+    depends_on:
+      - secure_note
+  
+volumes:
+  static_data:
+  pgdata: 

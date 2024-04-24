@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>update</title>
+    <link rel="stylesheet" type="text/css" href="{% static 'reset/style.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="forms-container">
+        <div class="signin-signup">
+          <form action="{% url 'authentication:password_reset' %}" method='post' class="sign-in-form">
+            {% csrf_token %}
+            <h2 class="title">Reset Password</h2>
+              <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="password" placeholder="password" name="password1" required/>
+              </div>
+              <div class="input-field">
+                <i class="fas fa-user"></i>
+                <input type="password" placeholder="confirm password" name="password2" required/>
+              </div>
+            <input type="submit" value="send" class="btn solid" />
+          </form>
+
+
+          <form action="{% url 'authentication:update' %}" method='post' class="sign-up-form">
+            {% csrf_token %}
+            <h2 class="title">Update Profile</h2>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Firstname" name="firstname" lable="First name" value={{user.firstname}} required />
+            </div>
+            <div class="input-field">
+              <i class="fas fa-user"></i>
+              <input type="text" placeholder="Lastname" name="lastname" lable="Last name" value={{user.lastname}} required/>
+            </div>
+            <div class="input-field">
+              <i class="fas fa-envelope"></i>
+              <input type="email" placeholder="Email" name="email" lable="Email" value={{user.email}} required/>
+            </div>
+            <input type="submit" value="update profile" class="btn solid" />
+          </form>
+        </div>
+      </div>
+      <div class="panels-container">
+
+        <div class="panel left-panel">
+            <div class="content">
+                <h2>Click here to update your profile</h2>
+                <button class="btn transparent" id="sign-up-btn">update profile</button>
+            </div>
+            <img src=" {%static 'reset/img/log.svg' %}" class="image" alt="">
+        </div>
+
+        <div class="panel right-panel">
+            <div class="content">
+                <h2>Click here to reset your Password</h2>
+                <button class="btn transparent" id="sign-in-btn">reset password</button>
+            </div>
+            <img src="{%static 'reset/img/register.svg' %}" class="image" alt="">
+        </div>
+      </div>
+    </div>
+
+    <script src="{% static 'reset/app.js' %}"></script>
+  </body>
+</html>
