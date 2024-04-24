@@ -5,6 +5,7 @@ from django.urls import reverse
 from .models import FileModel
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
+from . import cryptoengine
 
 
 class IndexView(LoginRequiredMixin,View):
@@ -29,12 +30,16 @@ class SaveFile(LoginRequiredMixin,View):
             except FileExistsError:
                 m = temp
                 m.content = file_content
+                m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(m.content)
+                m.md5_hash = cryptoengine.MessageDigest.md5_hash(m.content)
                 m.save()
             except:
                 m = FileModel()
                 m.name = file_name
                 m.content = file_content
                 m.user = requests.user
+                m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(m.content)
+                m.md5_hash = cryptoengine.MessageDigest.md5_hash(m.content)
                 m.save()
             return HttpResponseRedirect(reverse("note:file_display",args = (file_name,)))
 
