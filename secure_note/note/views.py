@@ -3,7 +3,6 @@ from django.http import HttpResponseRedirect
 from django.contrib.auth.decorators import login_required
 from django.urls import reverse
 from .models import FileModel
-from django.contrib import Views
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 

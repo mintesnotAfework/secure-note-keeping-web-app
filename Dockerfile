@@ -18,7 +18,7 @@ RUN chmod +x /scripts/*
 
 RUN mkdir -p /vol/web/static/password_rsa
 RUN mkdir -p /vol/web/media
-COPY ./secure_note/media /vol/web/media
+COPY ./secure_note/medias /vol/web/media
 
 RUN adduser -D user 
 RUN chown -R user:user /vol
