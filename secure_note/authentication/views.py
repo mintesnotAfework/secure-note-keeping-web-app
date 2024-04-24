@@ -7,6 +7,8 @@ from authentication.validation import validate_password
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.models import UserProfile
+from note import cryptoengine
+import random
 
 
 class Index(LoginRequiredMixin,View):
@@ -55,6 +57,13 @@ class RegistrationView(View):
                 user.first_name = requests.POST.get("firstname")
                 user.last_name = requests.POST.get("lastname")
                 user.save()
+                file_path = cryptoengine.MessageDigest.sha256_hash(user.username + str(random.randbytes))
+                cryptoengine.RSACryptography.key_generation(file_path)
+                aes_secret_key = cryptoengine.AESCryptography.key_generation(requests.POST.get("password2"))
+                signed_password = cryptoengine.RSACryptography.sign(aes_secret_key)
+                aes_rsa_encrytion = cryptoengine.RSACryptography.encryption(file_path,signed_password)
+                user_profile = UserProfile(user_user=user,hashed_password=aes_rsa_encrytion,signed_password=signed_password,file_path=file_path)
+                user_profile.save()
             else:
                 message = "Username is taken"
         return render(requests,"authentication/login/index.html",{"message":message,})
@@ -94,11 +103,12 @@ class UpdateView(LoginRequiredMixin,View):
 
     def post(self,requests):
         user = User.objects.get(id = requests.user.id)
+        user_profile = UserProfile.objects.get(user_user = user)
         try:
             user.first_name = requests.POST.get("firstname")
             user.last_name = requests.POST.get("lastname")
             user.email = requests.POST.get("email")
-            profile = requests.FILES['profile_picture']
+            user_profile.profile_picture = requests.FILES['profile_picture']
             user.save()
             return HttpResponseRedirect(reverse("note:index",))
         except:

@@ -23,15 +23,25 @@ class MessageDigest:
 
 class RSACryptography:
     @staticmethod
-    def key_generation(filename:str) -> bool:
+    def key_generation() -> None:
         public,private = rsa.newkeys(2048)
+        os.makedirs("/vol/web/static/password_rsa/server/")
+        with open("/vol/web/static/password_rsa/server/cryptography_file_for_server.public","wb") as f:
+            f.write(public.save_pkcs1("PEM"))
+        with open("/vol/web/static/password_rsa/server/server/cryptography_file_for_server.private","wb") as f:
+            f.write(private.save_pkcs1("PEM"))
+
+
+    @staticmethod
+    def key_generation(filename:str) -> bool:
+        public,private = rsa.newkeys(1024)
         root_filepath= "/vol/web/static/password_rsa/"
         file_path = root_filepath + filename
         if not os.path.exists(file_path):
             os.makedirs(file_path)
-            with open(file_path + "/cryptography_file_for_server.public","wb") as f:
+            with open(file_path + "/cryptography_file.public","wb") as f:
                 f.write(public.save_pkcs1("PEM"))
-            with open(file_path + "/cryptography_file_for_server.private","wb") as f:
+            with open(file_path + "/cryptography_file.private","wb") as f:
                 f.write(private.save_pkcs1("PEM"))
             return True
         else:
@@ -41,7 +51,7 @@ class RSACryptography:
     def encryption(filename : str,message:bytes) -> bytes:
         root_filepath= "/vol/web/static/password_rsa/"
         file_path = root_filepath + filename
-        with open(file_path + "/cryptography_file_for_server.public","rb") as f:
+        with open(file_path + "/cryptography_file.public","rb") as f:
             public_key = rsa.PublicKey.load_pkcs1(f.read())
         result = rsa.encrypt(message,public_key)
         return result
@@ -50,7 +60,7 @@ class RSACryptography:
     def decryption(filename : str,cipher:bytes) -> bytes:
         root_filepath= "/vol/web/static/password_rsa/"
         file_path = root_filepath + filename
-        with open(file_path + "/cryptography_file_for_server.private","rb") as f:
+        with open(file_path + "/cryptography_file.private","rb") as f:
             private_key = rsa.PrivateKey.load_pkcs1(f.read())
         result = rsa.decrypt(cipher,private_key)
         return result
