@@ -1,0 +1,72 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 2rem;
+    /* background-color: rgb(36, 36, 36); */
+    background-image: url('about1.jpg');
+    background-size: cover; /* Cover the entire screen */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-attachment: fixed; /* The image does not scroll with the page */
+}
+h1{
+    text-align: center;
+    font-size: 1cm;
+    font-weight: bold;
+}
+.image-gallery {
+    display: flex;
+    justify-content: space-between; /* Adjust spacing as needed */
+    width: 80%; /* Adjust width as needed */
+    margin: calc(10%);
+}
+
+.image-container {
+    background-color: rgb(44, 44, 255);
+    margin: 2px;
+    overflow: hidden; /* Prevent image overflow */
+    text-align: left; /* Center content within container */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    align-items: center; /* Center content horizontally */
+    justify-content: center; /* Center content vertically within container */
+    transition: background-color 0.3s ease; /* Add transition for hover effect */
+    border-style: solid;
+    border-color: black;
+    border-radius: 1cm;
+    font-weight: bold;
+}
+
+.image-container:hover {
+    background-color: lightblue; /* Change background color on hover */
+}
+
+.image-container img {
+    width: 100%; /* Adjust image width if needed */
+    height: auto; /* Maintain aspect ratio */
+    border-radius: 50%; /* Inherit rounded corners from container */
+}
+
+figcaption {
+    padding: 1rem;
+    width: 100%;
+    background-color: rgba(255, 255, 255, 0.8); /* Semi-transparent white background */
+}
+
+figcaption h2 {
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+figcaption p {
+    margin-bottom: 1rem;
+}
+
+figcaption ul {
+    list-style: disc;
+    padding-left: 1.5rem; /*Indent list items*/
+}
+
+figcaption li {
+    margin-bottom: 0.5rem;
+}

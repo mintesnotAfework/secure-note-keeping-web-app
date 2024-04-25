@@ -1,0 +1,56 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Image Gallery</title>
+    <link rel="stylesheet" href="{%static 'bio/style.css' %}">
+</head>
+<body>
+    <h1> Secure Note Keeper </h1>
+    <section class="image-gallery">
+        <figure class="image-container">
+        <a href="">
+            <img src="{%static 'bio/bishaw.png' %}" alt="Image 1 Description">
+        </a>
+            <figcaption>
+                <h2>Mintesnot Afework</h2>
+                <ul>
+                    <li>Hacker</li>
+                    <li>Cyber Security Engineer</li>
+                    <li>DevOp</li>
+                </ul>
+            </figcaption>
+        </figure>
+        <figure class="image-container">
+        <a href="">
+            <img src= "{%static 'bio/mike.png' %}" alt="Image 2 Description">
+        </a>
+            <figcaption>
+                <h2>Bishaw Teshema</h2>
+                <ul>
+                    <li>Cyber Security Engineer</li>
+                    <li>SoftWare Developer</li>
+                    <li>Front End Expert</li>
+                </ul>
+            </figcaption>
+        </figure>
+
+        <figure class="image-container">
+        <a href="">
+            <img src="{%static 'bio/mintesnot.png' %}" alt="Image 3 Description">
+        </a>
+            <figcaption>
+                <h2>Mikyas Sisay</h2>
+                <ul>
+                    <li>Cyber Security Engineer</li>
+                    <li>Animal Dad</li>
+                    <li>Back End Expert</li>
+                </ul>
+            </figcaption>
+        </figure>
+        </a>
+    </section>
+</body>
+</html>
