@@ -117,7 +117,12 @@ class UpdateView(LoginRequiredMixin,View):
 
 class ForgetView(View):
     def get(self,requests):
-        pass
+        return render(requests,"forget/index.html")
 
     def post(self,requests):
-        pass
+        return HttpResponseRedirect(reverse("authentication:index",))
+    
+
+class AboutView(View):
+    def get(self,requests):
+        return render(requests,"bio/index.html")

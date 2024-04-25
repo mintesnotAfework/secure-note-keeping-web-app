@@ -10,5 +10,7 @@ urlpatterns = [
     path("register/",views.RegistrationView.as_view(),name="register"),
     path("password_reset/",views.PasswordRestView.as_view(),name="password_reset"),
     path("update/",views.UpdateView.as_view(),name="update"),
+    path("forget/",views.ForgetView.as_view(),name="forget"),
+    path("about/",views.AboutView.as_view(),name="about"),
 ]
 
