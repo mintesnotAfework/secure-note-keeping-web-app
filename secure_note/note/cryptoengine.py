@@ -1,6 +1,6 @@
+import os
 import rsa
 import hashlib
-import os
 from Crypto.Cipher import AES
 from Crypto.Protocol.KDF import PBKDF2
 from Crypto.Random import get_random_bytes
@@ -30,7 +30,6 @@ class RSACryptography:
             f.write(public.save_pkcs1("PEM"))
         with open("/vol/web/static/password_rsa/server/server/cryptography_file_for_server.private","wb") as f:
             f.write(private.save_pkcs1("PEM"))
-
 
     @staticmethod
     def key_generation(filename:str) -> bool:
@@ -95,7 +94,6 @@ class AESCryptography:
         result = cipher.iv + cipher.encrypt(pad(message, AES.block_size))
         return result
 
-
     @staticmethod
     def decryption(message : bytes,secret_key:bytes) -> bytes:
         iv = message[16:]
@@ -108,4 +106,4 @@ class AESCryptography:
 
 if __name__ =='__main__':
     if not os.path.exists("/vol/web/static/password_rsa/server/"):
-        RSACryptography.key_generation("server")
+        RSACryptography.key_generation()

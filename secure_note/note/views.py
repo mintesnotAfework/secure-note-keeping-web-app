@@ -31,7 +31,7 @@ class SaveFile(LoginRequiredMixin,View):
                 m = temp
                 user_password = UserProfile.objects.get(user_user=requests.user)
                 singed_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
-                check_validity = cryptoengine.RSACryptography.verify_sign(singed_password,user_password.signed_password)
+                check_validity = cryptoengine.RSACryptography.verify_sign(singed_password,user_password.hashed_password)
                 if check_validity:
                     m.content = cryptoengine.AESCryptography.encryption(singed_password,file_content)
                     m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
@@ -59,7 +59,7 @@ class FileDisplayView(LoginRequiredMixin,View):
         list_of_files = FileModel.objects.filter(user=requests.user)
         user_password = UserProfile.objects.get(user_user=requests.user)
         singed_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
-        check_validity = cryptoengine.RSACryptography.verify_sign(singed_password,user_password.signed_password)
+        check_validity = cryptoengine.RSACryptography.verify_sign(singed_password,user_password.hashed_password)
         if check_validity:
             content = cryptoengine.AESCryptography.decryption(singed_password,file.content)
         else:
