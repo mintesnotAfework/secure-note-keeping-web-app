@@ -62,9 +62,9 @@ class RegistrationView(View):
                     file_path = cryptoengine.MessageDigest.sha256_hash(user.username + str(random.randbytes))
                 cryptoengine.RSACryptography.key_generation(file_path)
                 aes_secret_key = cryptoengine.AESCryptography.key_generation(requests.POST.get("password2"))
-                signed_password = cryptoengine.RSACryptography.sign(aes_secret_key)
+                # signed_password = cryptoengine.RSACryptography.sign(aes_secret_key)
                 aes_rsa_encrytion = cryptoengine.RSACryptography.encryption(file_path,aes_secret_key)
-                user_profile = UserProfile(user_user=user,hashed_password=aes_rsa_encrytion,signed_password=signed_password,file_path=file_path)
+                user_profile = UserProfile(user_user=user,hashed_password=aes_rsa_encrytion,file_path=file_path)
                 user_profile.save()
             else:
                 message = "Username is taken"

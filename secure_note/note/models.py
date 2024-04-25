@@ -8,5 +8,5 @@ class FileModel(models.Model):
     name = models.CharField(max_length=64)
     content = models.BinaryField()
     date_time = models.DateTimeField(default=now)
-    sha256_hash = models.CharField(max_length=256)
+    sha256_hash = models.CharField(max_length=512)
     md5_hash = models.CharField(max_length=128)

@@ -23,12 +23,12 @@ class MessageDigest:
 
 class RSACryptography:
     @staticmethod
-    def key_generation() -> None:
+    def server_key_generation():
         public,private = rsa.newkeys(2048)
         os.makedirs("/vol/web/static/password_rsa/server/")
         with open("/vol/web/static/password_rsa/server/cryptography_file_for_server.public","wb") as f:
             f.write(public.save_pkcs1("PEM"))
-        with open("/vol/web/static/password_rsa/server/server/cryptography_file_for_server.private","wb") as f:
+        with open("/vol/web/static/password_rsa/server/cryptography_file_for_server.private","wb") as f:
             f.write(private.save_pkcs1("PEM"))
 
     @staticmethod
@@ -68,7 +68,7 @@ class RSACryptography:
     def sign(message : bytes) -> bytes:
         with open("/vol/web/static/password_rsa/server/cryptography_file_for_server.private","rb") as f:
             private_key = rsa.PrivateKey.load_pkcs1(f.read())
-        result = rsa.sign(message,private_key,"sha256")
+        result = rsa.sign(message,private_key,"SHA-256")
 
     @staticmethod
     def verify_sign(message: bytes,signature:bytes) -> bytes:
@@ -96,7 +96,7 @@ class AESCryptography:
 
     @staticmethod
     def decryption(message : bytes,secret_key:bytes) -> bytes:
-        iv = message[16:]
+        iv = message[:16]
         cipher_text = message[16:]
         cipher = AES.new(secret_key,AES.MODE_CBC,iv=iv)
         orginal = unpad(cipher.decrypt(cipher_text), AES.block_size)
@@ -106,4 +106,4 @@ class AESCryptography:
 
 if __name__ =='__main__':
     if not os.path.exists("/vol/web/static/password_rsa/server/"):
-        RSACryptography.key_generation()
+        RSACryptography.server_key_generation()

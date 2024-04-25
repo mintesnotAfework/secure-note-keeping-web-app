@@ -46,7 +46,7 @@
         <form action="{% url 'note:save' %}" method="post">
             {% csrf_token %}
             <textarea id="note-title" placeholder="Write your note name..." name="filename"  required>{{file.name}}</textarea>
-            <textarea id="note-content" placeholder="Write your note here..." name="filecontent" required>{{file.content}}</textarea>
+            <textarea id="note-content" placeholder="Write your note here..." name="filecontent" required>{{content}}</textarea>
             <div class="actions">
             <button id="save-note">Save Note</button>
             </form>
