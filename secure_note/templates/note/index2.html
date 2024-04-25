@@ -19,7 +19,7 @@
     <nav id="navigation">
         <div class="user-info">
             <a href="{% url 'authentication:update' %}">
-                <img src="/medias/profile/default/default.png" alt="" class="user-icon">
+                <img src="{% get_media_prefix %}"{{ user_password.profile_picture.url }} alt="profile picture" class="user-icon">
                 <span id="user-name">{{request.user.username}}</span>
             </a>
         </div>
