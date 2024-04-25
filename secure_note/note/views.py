@@ -31,6 +31,7 @@ class SaveFile(LoginRequiredMixin,View):
             except FileExistsError:
                 m = temp
                 user_password = UserProfile.objects.get(user_user=requests.user)
+                check_validaty = cryptoengine.RSACryptography.verify_sign(user_password.hashed_password,user_password.signed_password)
                 aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
                 m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
@@ -40,6 +41,7 @@ class SaveFile(LoginRequiredMixin,View):
                 m = FileModel()
                 m.name = file_name
                 user_password = UserProfile.objects.get(user_user=requests.user)
+                check_validaty = cryptoengine.RSACryptography.verify_sign(user_password.hashed_password,user_password.signed_password)
                 aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
                 m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 m.user = requests.user
@@ -55,9 +57,9 @@ class FileDisplayView(LoginRequiredMixin,View):
         file = FileModel.objects.get(name=name)
         list_of_files = FileModel.objects.filter(user=requests.user)
         user_password = UserProfile.objects.get(user_user=requests.user)
+        check_validaty = cryptoengine.RSACryptography.verify_sign(user_password.hashed_password,user_password.signed_password)
         aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
         content = cryptoengine.AESCryptography.decryption(file.content,aes_password)
-        print("\n\n\n/n/n/n/n/n/n/n/n" + user_password.profile_picture.url)
         return render(requests,"note/index2.html",{"file":file,"list_of_file":list_of_files,"content":content.decode(),"user_password":user_password})
 
 

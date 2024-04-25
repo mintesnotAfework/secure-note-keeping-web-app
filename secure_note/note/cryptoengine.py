@@ -68,10 +68,11 @@ class RSACryptography:
     def sign(message : bytes) -> bytes:
         with open("/vol/web/static/password_rsa/server/cryptography_file_for_server.private","rb") as f:
             private_key = rsa.PrivateKey.load_pkcs1(f.read())
-        result = rsa.sign(message,private_key,"SHA-256")
+        result = rsa.sign(message,private_key,"SHA-1")
+        return result
 
     @staticmethod
-    def verify_sign(message: bytes,signature:bytes) -> bytes:
+    def verify_sign(message: bytes,signature:bytes) -> bool:
         with open("/vol/web/static/password_rsa/server/cryptography_file_for_server.public","rb") as f:
             public_key = rsa.PublicKey.load_pkcs1(f.read())
         try:
