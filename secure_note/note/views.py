@@ -13,7 +13,7 @@ class IndexView(LoginRequiredMixin,View):
     def get(self,requests):
         list_of_file = FileModel.objects.filter(user=requests.user)
         user_profile = UserProfile.objects.get(user_user = requests.user)
-        return render(requests,"note/index.html",{"list_of_file":list_of_file,"user_profile":user_profile})
+        return render(requests,"note/index.html",{"list_of_file":list_of_file,"user_password":user_profile})
     
 
 class SaveFile(LoginRequiredMixin,View):
@@ -57,6 +57,7 @@ class FileDisplayView(LoginRequiredMixin,View):
         user_password = UserProfile.objects.get(user_user=requests.user)
         aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
         content = cryptoengine.AESCryptography.decryption(file.content,aes_password)
+        print("\n\n\n/n/n/n/n/n/n/n/n" + user_password.profile_picture.url)
         return render(requests,"note/index2.html",{"file":file,"list_of_file":list_of_files,"content":content.decode(),"user_password":user_password})
 
 
