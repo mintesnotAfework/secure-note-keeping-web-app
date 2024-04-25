@@ -1,0 +1,36 @@
+.container {
+  display: flex;
+  flex-direction: column;  /* Stack elements vertically */
+  justify-content: center;  /* Center content vertically */
+  align-items: center;
+  height: 100vh;
+  width: 100vw;
+}
+
+.container button {
+  display: inline-block;
+  margin: 5px;
+  padding: 10px 20px;
+  border-radius: 5px; 
+  background-color: blue; /* Add rounded corners to buttons */
+}
+button{
+  display: inline-block;
+}
+#delete{
+  background-color: red;
+}
+#delete:hover{
+  background-color: rgb(131, 0, 0);
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+li {
+  margin: 5px;
+  padding: 5px 10px;
+  border: 1px solid #ccc;
+}

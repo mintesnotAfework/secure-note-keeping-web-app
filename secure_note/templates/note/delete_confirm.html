@@ -1,0 +1,27 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Delete File</title>
+  <link rel="stylesheet" href="{% static 'note/delete/styles.css' %}">  </head>
+<body>
+  <div class="container">
+    <ul>
+      <li>file name : {{file.name}}</li>
+      <li>file creation data : {{file.date_time}}</li>
+      <li>username : {{ file.user.username }}</li>
+    </ul>
+    <form method="post" action="{% url 'note:delete' file.name %}">
+      {% csrf_token %}
+      <button id="delete">Delete</button>
+    </form>
+    <form method="get" action="{% url 'note:file_display' file.name %}">
+      {% csrf_token %}
+      <button>Cancel</button>
+    </form>
+  </div>
+</body>
+</html>

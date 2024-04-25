@@ -31,8 +31,6 @@ class SaveFile(LoginRequiredMixin,View):
                 m = temp
                 user_password = UserProfile.objects.get(user_user=requests.user)
                 aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
-                # check_validity = cryptoengine.RSACryptography.verify_sign(singed_password,user_password.hashed_password)
-                # if check_validity:
                 m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
                 m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
@@ -42,8 +40,6 @@ class SaveFile(LoginRequiredMixin,View):
                 m.name = file_name
                 user_password = UserProfile.objects.get(user_user=requests.user)
                 aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
-                # check_validity = cryptoengine.RSACryptography.verify_sign(singed_password,user_password.signed_password)
-                # if check_validity:
                 m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 m.user = requests.user
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
@@ -59,18 +55,17 @@ class FileDisplayView(LoginRequiredMixin,View):
         list_of_files = FileModel.objects.filter(user=requests.user)
         user_password = UserProfile.objects.get(user_user=requests.user)
         aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
-        # check_validity = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.hashed_password)
-        # if check_validity:
         content = cryptoengine.AESCryptography.decryption(file.content,aes_password)
-        # else:
-        #     content = "An Error occured in reteriving data"
         return render(requests,"note/index2.html",{"file":file,"list_of_file":list_of_files,"content":content.decode()})
 
 
 class DeleteFileView(LoginRequiredMixin,View):
     login_url = "/login/"
-    def get(self,requests,name):
-        if requests.method == "POST":
-            file = FileModel.objects.get(name=name)
-            file.delete()
+    def get(self,requests,name):   
+        file = FileModel.objects.filter(user = requests.user).get(name=name)
+        return render(requests,"note/delete_confirm.html",{"file":file})
+    
+    def post(self,requests,name):
+        file = FileModel.objects.filter(user = requests.user).get(name=name)
+        file.delete()
         return HttpResponseRedirect(reverse("note:index"))

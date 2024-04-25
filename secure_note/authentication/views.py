@@ -61,8 +61,7 @@ class RegistrationView(View):
                 while len(UserProfile.objects.filter(file_path = file_path)) != 0:
                     file_path = cryptoengine.MessageDigest.sha256_hash(user.username + str(random.randbytes))
                 cryptoengine.RSACryptography.key_generation(file_path)
-                aes_secret_key = cryptoengine.AESCryptography.key_generation(requests.POST.get("password2"))
-                # signed_password = cryptoengine.RSACryptography.sign(aes_secret_key)
+                aes_secret_key = cryptoengine.AESCryptography.key_generation(requests.POST.get("password1"))
                 aes_rsa_encrytion = cryptoengine.RSACryptography.encryption(file_path,aes_secret_key)
                 user_profile = UserProfile(user_user=user,hashed_password=aes_rsa_encrytion,file_path=file_path)
                 user_profile.save()
@@ -79,7 +78,9 @@ class LogoutView(LoginRequiredMixin,View):
 class PasswordRestView(LoginRequiredMixin,View):
     login_url = "/login/"
     def get(self,requests):
-        return render(requests,"authentication/reset/index.html")
+        user = User.objects.get(id = requests.user.id)
+        user_profile = UserProfile.objects.get(user_user = user)
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
     
     def post(self,requests):
         message = ""
@@ -94,14 +95,17 @@ class PasswordRestView(LoginRequiredMixin,View):
             message = "The password field is not the same"
         elif requests.POST.get("password1") == "":
             message = "The password field is required"
-        return render(requests,"authentication/reset/index.html",{"message":message,})
+        user = User.objects.get(id = requests.user.id)
+        user_profile = UserProfile.objects.get(user_user = user)
+        return render(requests,"authentication/reset/index.html",{"message":message,"user":user,"user_profile":user_profile})
 
 
 class UpdateView(LoginRequiredMixin,View):
     login_url = "/login/"
     def get(self,requests):
         user = User.objects.get(id = requests.user.id)
-        return render(requests,"authentication/reset/index.html",{"user":user})
+        user_profile = UserProfile.objects.get(user_user = user)
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
 
     def post(self,requests):
         user = User.objects.get(id = requests.user.id)
@@ -114,12 +118,12 @@ class UpdateView(LoginRequiredMixin,View):
             user.save()
             return HttpResponseRedirect(reverse("note:index",))
         except:
-            return render(requests,"authentication/reset/index.html",{"user":user})
+            return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
 
 
 class ForgetView(View):
     def get(self,requests):
-        return render(requests,"forget/index.html")
+        return render(requests,"authentication/forget/index.html")
 
     def post(self,requests):
         return HttpResponseRedirect(reverse("authentication:index",))
