@@ -27,8 +27,15 @@
               <i class="fas fa-lock"></i>
               <input type="password" placeholder="Password" name="password" required/>
             </div>
+            <a href="{% url 'authentication:forget' %}" style="color: red;" style="font-weight: bold;"> 
+              Forget my password
+            </a> 
             <input type="submit" value="Login" class="btn solid" />
+            <a href="{% url 'authentication:about' %}" style="color: green;" style="font-weight: bold;"> 
+              About Us
+            </a>
           </form>
+           
           
           <form action="{% url 'authentication:register' %}" method="post" class="sign-up-form">
             {% csrf_token %}
