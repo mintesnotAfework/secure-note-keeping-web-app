@@ -14,3 +14,6 @@ def validate_password(password:str) -> bool:
   if not re.search(pattern, password):
     return False
   return True
+
+def filter_input(input_text:str) -> str:
+  pass

@@ -1,5 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponseRedirect,Http404,HttpResponseServerError,HttpResponseBadRequest
+from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm
 from django.urls import reverse
 from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.models import User
@@ -22,14 +23,15 @@ class LoginView(View):
         return render(requests,"authentication/login/index.html")
     
     def post(self,requests):
-        username = requests.POST["username"]
-        password = requests.POST["password"]
-        user = authenticate(requests, username=username, password=password)
-        if user is not None:
-            login(requests,user)
-            return HttpResponseRedirect(reverse("note:index",))
-        else:
-            message = "Invalid username or password"
+        login_form = LoginForm(data=requests.POST)
+        if login_form.is_valid():
+            username = requests.POST["username"]
+            password = requests.POST["password"]
+            user = authenticate(requests, username=username, password=password)
+            if user is not None:
+                login(requests,user)
+                return HttpResponseRedirect(reverse("note:index",))
+        message = "Invalid username or password"
         return render(requests,"authentication/login/index.html",{"message" : message})
 
 
@@ -38,36 +40,34 @@ class RegistrationView(View):
         return render(requests,"authentication/login/index.html")
 
     def post(self,requests):
-        message=""
-        if not (validate_password(requests.POST.get("password1"))):
-            message = "The password is invalid\nMake sure it has captial and small letter with number and special character"
-        elif requests.POST.get("password1") != requests.POST.get("password2"):
-            message = "The password are not the same"
-        elif requests.POST.get("email") == "":
-            message = "Email field can not be empty"
-        elif requests.POST.get("firstname") == "":
-            message = "First name can not be empty"
-        elif requests.POST.get("lastname") == "":
-            message = "Last name can not be empty"
-        else:
-            try:
-                user_temp = User.objects.get(username=requests.POST.get("username"))
-            except:
-                user = User.objects.create_user(requests.POST.get("username"), requests.POST.get("email"), requests.POST.get("password1"))
-                user.first_name = requests.POST.get("firstname")
-                user.last_name = requests.POST.get("lastname")
-                user.save()
-                file_path = cryptoengine.MessageDigest.sha256_hash(user.username + str(random.randbytes))
-                while len(UserProfile.objects.filter(file_path = file_path)) != 0:
-                    file_path = cryptoengine.MessageDigest.sha256_hash(user.username + str(random.randbytes))
-                cryptoengine.RSACryptography.key_generation(file_path)
-                aes_secret_key = cryptoengine.AESCryptography.key_generation(requests.POST.get("password1"))
-                singed_aes_key = cryptoengine.RSACryptography.sign(aes_secret_key)
-                aes_rsa_encrytion = cryptoengine.RSACryptography.encryption(file_path,aes_secret_key)
-                user_profile = UserProfile(user_user=user,signed_password=singed_aes_key, hashed_password=aes_rsa_encrytion,file_path=file_path)
-                user_profile.save()
+        registeration_form = RegistrationForm(data=requests.POST)
+        if registeration_form.is_valid():
+            message=""
+            if not (validate_password(requests.POST.get("password1"))):
+                message = "The password is invalid\nMake sure it has captial and small letter with number and special character"
+            elif not requests.POST.get("password1") == requests.POST.get("password2"):
+                message = "The password does not match"
             else:
-                message = "Username is taken"
+                try:
+                    user_temp = User.objects.get(username=requests.POST.get("username"))
+                except:
+                    user = User.objects.create_user(requests.POST.get("username"), requests.POST.get("email"), requests.POST.get("password1"))
+                    user.first_name = requests.POST.get("firstname")
+                    user.last_name = requests.POST.get("lastname")
+                    user.save()
+                    file_path = cryptoengine.MessageDigest.sha256_hash(user.username + str(random.randbytes))
+                    while len(UserProfile.objects.filter(file_path = file_path)) != 0:
+                        file_path = cryptoengine.MessageDigest.sha256_hash(user.username + str(random.randbytes))
+                    cryptoengine.RSACryptography.key_generation(file_path)
+                    aes_secret_key = cryptoengine.AESCryptography.key_generation(requests.POST.get("password1"))
+                    singed_aes_key = cryptoengine.RSACryptography.sign(aes_secret_key)
+                    aes_rsa_encrytion = cryptoengine.RSACryptography.encryption(file_path,aes_secret_key)
+                    user_profile = UserProfile(user_user=user,signed_password=singed_aes_key, hashed_password=aes_rsa_encrytion,file_path=file_path)
+                    user_profile.save()
+                else:
+                    message = "Username is taken"
+        else:
+            message = registeration_form.errors
         return render(requests,"authentication/login/index.html",{"message":message,})
 
 class LogoutView(LoginRequiredMixin,View):
@@ -84,18 +84,22 @@ class PasswordRestView(LoginRequiredMixin,View):
         return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
     
     def post(self,requests):
-        message = ""
-        if not (validate_password(requests.POST.get("password1"))):
-            message = "The password is invalid\nMake sure it has captial and small letter with number and special character"
-        elif requests.POST.get("password1") == requests.POST.get("password2") and requests.POST.get("password1") != "":
-            user = requests.user
-            user.set_password(requests.POST.get("password1"))
-            user.save()
-            return HttpResponseRedirect(reverse("note:index",))
-        elif requests.POST.get("password1") == requests.POST.get("password2"):
-            message = "The password field is not the same"
-        elif requests.POST.get("password1") == "":
-            message = "The password field is required"
+        password_reset_form = PasswordResetForm(data=requests.POST)
+        if password_reset_form.is_valid():
+            message = ""
+            if not (validate_password(requests.POST.get("password1"))):
+                message = "The password is invalid\nMake sure it has captial and small letter with number and special character"
+            elif requests.POST.get("password1") == requests.POST.get("password2"):
+                user = requests.user
+                user.set_password(requests.POST.get("password1"))
+                user.save()
+                return HttpResponseRedirect(reverse("note:index",))
+            elif requests.POST.get("password1") != requests.POST.get("password2"):
+                message = "The password field is not the same"
+            elif requests.POST.get("password1") == "":
+                message = "The password field is required"
+        else:
+            message = password_reset_form.errors
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
         return render(requests,"authentication/reset/index.html",{"message":message,"user":user,"user_profile":user_profile})
@@ -111,7 +115,8 @@ class UpdateView(LoginRequiredMixin,View):
     def post(self,requests):
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
-        try:
+        update_form = UpdateForm(data=requests.POST)
+        if update_form.is_valid():
             user.first_name = requests.POST.get("firstname")
             user.last_name = requests.POST.get("lastname")
             user.email = requests.POST.get("email")
@@ -119,8 +124,8 @@ class UpdateView(LoginRequiredMixin,View):
             user.save()
             user_profile.save()
             return HttpResponseRedirect(reverse("note:index",))
-        except:
-            return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
+        else:
+            return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors})
 
 
 class ForgetView(View):
