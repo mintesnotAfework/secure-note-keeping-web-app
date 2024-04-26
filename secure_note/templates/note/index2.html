@@ -50,6 +50,10 @@
             <div class="actions">
             <button id="save-note">Save Note</button>
             </form>
+            <lable for="sha256">SHA-256 :</lable>
+            <textarea name="sha256" disabled>{{ file.sha256_hash }}</textarea>
+            <lable for="md5">MD5 :</lable>
+            <textarea name="md5" disabled>{{ file.md5_hash }}</textarea>
             <form action="{% url 'note:delete' file.name %}" method="get">
                 {% csrf_token %}
                 <button id="delete-note">Delete Note</button>

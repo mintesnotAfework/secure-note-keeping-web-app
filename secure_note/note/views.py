@@ -35,7 +35,10 @@ class SaveFile(LoginRequiredMixin,View):
                 user_password = UserProfile.objects.get(user_user=requests.user)
                 aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
                 check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
-                m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
+                if check_validaty:
+                    m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
+                else:
+                    pass
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
                 m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
                 m.save()
@@ -45,7 +48,10 @@ class SaveFile(LoginRequiredMixin,View):
                 user_password = UserProfile.objects.get(user_user=requests.user)
                 aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
                 check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
-                m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
+                if check_validaty:
+                    m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
+                else:
+                    pass
                 m.user = requests.user
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
                 m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
@@ -58,12 +64,15 @@ class SaveFile(LoginRequiredMixin,View):
 class FileDisplayView(LoginRequiredMixin,View):
     login_url = "/login/"
     def get(self,requests,name):
-        file = FileModel.objects.get(name=name)
+        file = FileModel.objects.filter(user=requests.user).get(name=name)
         list_of_files = FileModel.objects.filter(user=requests.user)
         user_password = UserProfile.objects.get(user_user=requests.user)
         aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
         check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
-        content = cryptoengine.AESCryptography.decryption(file.content,aes_password)
+        if check_validaty:
+            content = cryptoengine.AESCryptography.decryption(file.content,aes_password)
+        else:
+            pass
         return render(requests,"note/index2.html",{"file":file,"list_of_file":list_of_files,"content":content.decode(),"user_password":user_password})
 
 
