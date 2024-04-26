@@ -1,6 +1,7 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect
+from django.http import HttpResponsePermanentRedirect,Http404
 from django.urls import reverse
+from .forms import SaveForm
 from .models import FileModel
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
@@ -19,12 +20,13 @@ class IndexView(LoginRequiredMixin,View):
 class SaveFile(LoginRequiredMixin,View):
     login_url="/login/"
     def get(self,requests):
-        return HttpResponseRedirect(reverse("note:index"))
+        return HttpResponsePermanentRedirect(reverse("note:index"))
     
     def post(self,requests):
-        file_name = requests.POST.get('filename')
-        file_content = requests.POST.get('filecontent')
-        if (file_name is not None):
+        save_form = SaveForm(data=requests.POST)
+        if save_form.is_valid():
+            file_name = requests.POST.get('filename')
+            file_content = requests.POST.get('filecontent')
             try:
                 temp = FileModel.objects.filter(user=requests.user).get(name=file_name)
                 raise FileExistsError()
@@ -48,7 +50,9 @@ class SaveFile(LoginRequiredMixin,View):
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
                 m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
                 m.save()
-            return HttpResponseRedirect(reverse("note:file_display",args = (file_name,)))
+            return HttpResponsePermanentRedirect(reverse("note:file_display",args = (file_name,)))
+        else:
+            return Http404()
 
 
 class FileDisplayView(LoginRequiredMixin,View):
@@ -72,4 +76,4 @@ class DeleteFileView(LoginRequiredMixin,View):
     def post(self,requests,name):
         file = FileModel.objects.filter(user = requests.user).get(name=name)
         file.delete()
-        return HttpResponseRedirect(reverse("note:index"))
+        return HttpResponsePermanentRedirect(reverse("note:index"))

@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from django.http import HttpResponseRedirect,Http404,HttpResponseServerError,HttpResponseBadRequest
+from django.http import HttpResponsePermanentRedirect
 from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm
 from django.urls import reverse
 from django.contrib.auth import logout,login,authenticate
@@ -15,7 +15,7 @@ import random
 class Index(LoginRequiredMixin,View):
     login_url = "/login"
     def get(self, requests):
-        return HttpResponseRedirect(reverse("note:index"))
+        return HttpResponsePermanentRedirect(reverse("note:index"))
 
 
 class LoginView(View):
@@ -30,7 +30,7 @@ class LoginView(View):
             user = authenticate(requests, username=username, password=password)
             if user is not None:
                 login(requests,user)
-                return HttpResponseRedirect(reverse("note:index",))
+                return HttpResponsePermanentRedirect(reverse("note:index",))
         message = "Invalid username or password"
         return render(requests,"authentication/login/index.html",{"message" : message})
 
@@ -74,7 +74,7 @@ class LogoutView(LoginRequiredMixin,View):
     login_url="/login/"
     def get(self,requests):
         logout(requests)
-        return HttpResponseRedirect(reverse("authentication:index",))
+        return HttpResponsePermanentRedirect(reverse("authentication:index",))
     
 class PasswordRestView(LoginRequiredMixin,View):
     login_url = "/login/"
@@ -93,7 +93,7 @@ class PasswordRestView(LoginRequiredMixin,View):
                 user = requests.user
                 user.set_password(requests.POST.get("password1"))
                 user.save()
-                return HttpResponseRedirect(reverse("note:index",))
+                return HttpResponsePermanentRedirect(reverse("note:index",))
             elif requests.POST.get("password1") != requests.POST.get("password2"):
                 message = "The password field is not the same"
             elif requests.POST.get("password1") == "":
@@ -123,7 +123,7 @@ class UpdateView(LoginRequiredMixin,View):
             user_profile.profile_picture = requests.FILES['profile_picture']
             user.save()
             user_profile.save()
-            return HttpResponseRedirect(reverse("note:index",))
+            return HttpResponsePermanentRedirect(reverse("note:index",))
         else:
             return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors})
 
@@ -133,7 +133,7 @@ class ForgetView(View):
         return render(requests,"authentication/forget/index.html")
 
     def post(self,requests):
-        return HttpResponseRedirect(reverse("authentication:index",))
+        return HttpResponsePermanentRedirect(reverse("authentication:index",))
     
 
 class AboutView(View):
