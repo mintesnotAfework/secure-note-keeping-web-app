@@ -16,17 +16,17 @@
             <h2 class="title">Reset Password</h2>
               <div class="input-field">
                 <i class="fas fa-user"></i>
-                <input type="password" placeholder="password" name="password1" required/>
+                <input type="password" placeholder="password" name="password1" minlength="8" maxlength="50" required/>
               </div>
               <div class="input-field">
                 <i class="fas fa-user"></i>
-                <input type="password" placeholder="confirm password" name="password2" required/>
+                <input type="password" placeholder="confirm password" name="password2" minlength="8" maxlength="50" required/>
               </div>
             <input type="submit" value="send" class="btn solid" />
           </form>
 
 
-          <form action="{% url 'authentication:update' %}" method='post' class="sign-up-form">
+          <form action="{% url 'authentication:update' %}" method='post' class="sign-up-form" enctype="multipart/form-data">
             {% csrf_token %}
             <h2 class="title">Update Profile</h2>
             <div class="input-field">
@@ -35,15 +35,15 @@
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Firstname" name="firstname" lable="First name" value={{user.first_name}} required />
+              <input type="text" placeholder="Firstname" name="firstname" lable="First name" minlength="5"  maxlength="64" value={{user.first_name}} required />
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Lastname" name="lastname" lable="Last name" value={{user.last_name}} required/>
+              <input type="text" placeholder="Lastname" name="lastname" lable="Last name" minlength="5" maxlength="64" value={{user.last_name}} required/>
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" name="email" lable="Email" value={{user.email}} required/>
+              <input type="email" placeholder="Email" name="email" lable="Email" minlength="5" maxlength="320" value={{user.email}} required/>
             </div>
             <input type="submit" value="update profile" class="btn solid" />
           </form>

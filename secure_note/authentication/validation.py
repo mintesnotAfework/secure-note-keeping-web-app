@@ -1,6 +1,6 @@
 import re
 
-def validate_password(password):
+def validate_password(password:str) -> bool:
   """
   Validates password strength using regular expressions.
 
@@ -12,5 +12,5 @@ def validate_password(password):
   """
   pattern = "^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$"
   if not re.search(pattern, password):
-    return True
+    return False
   return True

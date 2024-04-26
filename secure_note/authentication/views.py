@@ -117,6 +117,7 @@ class UpdateView(LoginRequiredMixin,View):
             user.email = requests.POST.get("email")
             user_profile.profile_picture = requests.FILES['profile_picture']
             user.save()
+            user_profile.save()
             return HttpResponseRedirect(reverse("note:index",))
         except:
             return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})

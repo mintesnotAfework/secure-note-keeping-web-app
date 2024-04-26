@@ -21,11 +21,11 @@
                 </p> 
               <div class="input-field">
                 <i class="fas fa-user"></i>
-                <input type="text" placeholder="Username" name="username" required/>
+                <input type="text" placeholder="Username" name="username" minlength="5" maxlength="64" required/>
               </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" name="password" required/>
+              <input type="password" placeholder="Password" name="password" minlength="8" maxlength="50" required/>
             </div>
             <a href="{% url 'authentication:forget' %}" style="color: red;" style="font-weight: bold;"> 
               Forget my password
@@ -42,27 +42,27 @@
             <h2 class="title">Sign Up</h2>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="First name" name="firstname" required/>
+              <input type="text" placeholder="First name" name="firstname" minlength="5" maxlength="64" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Last name" name="lastname" required/>
+              <input type="text" placeholder="Last name" name="lastname"  minlength="5" maxlength="64" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Username" name="username" required/>
+              <input type="text" placeholder="Username" name="username"  minlength="5" maxlength="64" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
-              <input type="email" placeholder="Email" name="email" required/>
+              <input type="email" placeholder="Email" name="email"  minlength="5" maxlength="320" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Password" name="password1" required/>
+              <input type="password" placeholder="Password" name="password1"  minlength="8" maxlength="64" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-lock"></i>
-              <input type="password" placeholder="Confirm Password" name="password2" required/>
+              <input type="password" placeholder="Confirm Password" name="password2"  minlength="8" maxlength="64" required/>
             </div>
             <input type="submit" value="Sign Up" class="btn solid" />
           </form>

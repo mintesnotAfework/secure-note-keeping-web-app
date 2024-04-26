@@ -45,8 +45,8 @@
     <div class="content">
         <form action="{% url 'note:save' %}" method="post">
             {% csrf_token %}
-            <textarea id="note-title" placeholder="Write your note name..." name="filename"  required>{{file.name}}</textarea>
-            <textarea id="note-content" placeholder="Write your note here..." name="filecontent" required>{{content}}</textarea>
+            <textarea id="note-title" placeholder="Write your note name..." name="filename"  minlength="2" maxlength="64" required>{{file.name}}</textarea>
+            <textarea id="note-content" placeholder="Write your note here..." name="filecontent" minlength="1" maxlength="10000" required>{{content}}</textarea>
             <div class="actions">
             <button id="save-note">Save Note</button>
             </form>
