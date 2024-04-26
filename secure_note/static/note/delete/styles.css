@@ -1,22 +1,42 @@
+body{
+  background-color: white;
+}
+
 .container {
+  background-color: grey;
   display: flex;
   flex-direction: column;  /* Stack elements vertically */
   justify-content: center;  /* Center content vertically */
   align-items: center;
-  height: 100vh;
-  width: 100vw;
+  height: 65vh;
+  width: 70vw;
+  box-shadow: 5px 5px 5px black;
+  border-color: black;
+  border-radius: 5%;
+  border-color: black;
+  font-size: larger;
+  font-weight: bolder;
+  margin: auto;
 }
 
 .container button {
   display: inline-block;
+  flex-direction: row;
   margin: 5px;
   padding: 10px 20px;
   border-radius: 5px; 
-  background-color: blue; /* Add rounded corners to buttons */
+  background-color: green; /* Add rounded corners to buttons */
+  border-radius: 1rem;
+  border-color: black;
+}
+.container button:hover{
+  background-color:darkgreen;
 }
 button{
   display: inline-block;
+  flex-direction: row;
 }
+
 #delete{
   background-color: red;
 }
@@ -32,5 +52,8 @@ ul {
 li {
   margin: 5px;
   padding: 5px 10px;
-  border: 1px solid #ccc;
+  border: 1px solid black;
+  border-radius: 5%;
+  font-size: 2rem;
+  font-weight: bolder;
 }
