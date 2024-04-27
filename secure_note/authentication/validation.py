@@ -22,5 +22,5 @@ def is_all_char(message:str) -> bool:
   return all(i.isalpha() for i in message)
 
 def is_all_char_num(message:str)->bool:
-  return all(i.isalpah() or i.isdigit() for i in message)
+  return all(i.isalpha() or i.isdigit() for i in message)
 
