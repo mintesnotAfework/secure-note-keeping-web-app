@@ -17,3 +17,10 @@ def validate_password(password:str) -> bool:
 
 def filter_input(input_text:str) -> str:
   pass
+
+def is_all_char(message:str) -> bool:
+  return all(i.isalpha() for i in message)
+
+def is_all_char_num(message:str)->bool:
+  return all(i.isalpah() or i.isdigit() for i in message)
+
