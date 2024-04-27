@@ -1,10 +1,10 @@
 from django.shortcuts import render
-from django.http import HttpResponsePermanentRedirect
+from django.http import HttpResponsePermanentRedirect,Http404
 from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm
 from django.urls import reverse
 from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.models import User
-from authentication.validation import validate_password
+from authentication.validation import validate_password,is_all_char,is_all_char_num
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.models import UserProfile
@@ -47,6 +47,10 @@ class RegistrationView(View):
                 message = "The password is invalid\nMake sure it has captial and small letter with number and special character"
             elif not requests.POST.get("password1") == requests.POST.get("password2"):
                 message = "The password does not match"
+            elif not is_all_char(requests.POST["firstname"] + requests.POST["lastname"]):
+                message = "The name is invalid only use character"
+            elif not is_all_char_num(requests.POST["username"]):
+                message = "The username is invlaid only use alphabets and digit"
             else:
                 try:
                     user_temp = User.objects.get(username=requests.POST.get("username"))
@@ -116,7 +120,9 @@ class UpdateView(LoginRequiredMixin,View):
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
         update_form = UpdateForm(data=requests.POST)
-        if update_form.is_valid():
+        if not is_all_char(requests.POST["firstname"] + requests.POST["lastname"]):
+            return Http404()
+        elif update_form.is_valid():
             user.first_name = requests.POST.get("firstname")
             user.last_name = requests.POST.get("lastname")
             user.email = requests.POST.get("email")
@@ -124,8 +130,7 @@ class UpdateView(LoginRequiredMixin,View):
             user.save()
             user_profile.save()
             return HttpResponsePermanentRedirect(reverse("note:index",))
-        else:
-            return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors})
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors})
 
 
 class ForgetView(View):
