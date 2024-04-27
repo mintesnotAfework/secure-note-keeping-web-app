@@ -20,14 +20,14 @@
         <div class="user-info">
             <a href="{% url 'authentication:update' %}">
                 <img src="{{ user_password.profile_picture.url }}" alt="profile picture" class="user-icon">
-                <span id="user-name">{{request.user.username||safe}}</span>
+                <span id="user-name">{{request.user.username|escapejs}}</span>
             </a>
         </div>
         <ul class="note-list">
             {% if list_of_file %}
                 {% for item in list_of_file %}
                 <a href="{% url 'note:file_display' item.name %}">
-                    <li>{{ item.name||safe }}</li>
+                    <li>{{ item.name|escapejs }}</li>
                 </a>
                 {% empty %}
                     <li> No Note </li>
@@ -45,16 +45,16 @@
     <div class="content">
         <form action="{% url 'note:save' %}" method="post">
             {% csrf_token %}
-            <textarea id="note-title" placeholder="Write your note name..." name="filename"  minlength="2" maxlength="64" pattern="[a-zA-Z0-9]+" required>{{file.name||safe}}</textarea>
-            <textarea id="note-content" placeholder="Write your note here..." name="filecontent" minlength="1" maxlength="10000" required>{{content||safe}}</textarea>
+            <textarea id="note-title" placeholder="Write your note name..." name="filename"  minlength="2" maxlength="64" pattern="[a-zA-Z0-9]+" required>{{file.name|escapejs}}</textarea>
+            <textarea id="note-content" placeholder="Write your note here..." name="filecontent" minlength="1" maxlength="10000" required>{{content|escapejs}}</textarea>
             <div class="actions">
             <button id="save-note">Save Note</button>
             </form>
             <div style="border: 1px solid black;font-size: 1rem;" >
                 <lable for="sha256">SHA-256 :</lable>
-                <textarea id="sha256md5" name="sha256" disabled row="1" column="256" >{{ file.sha256_hash }}</textarea>
+                <textarea id="sha256md5" name="sha256" disabled row="1" column="256" >{{ file.sha256_hash|escapejs }}</textarea>
                 <lable for="md5">MD5 :</lable>
-                <textarea id="sha256md5" name="md5" disabled row="1" column="160">{{ file.md5_hash }}</textarea>
+                <textarea id="sha256md5" name="md5" disabled row="1" column="160">{{ file.md5_hash|escapejs }}</textarea>
             </div>
             <form action="{% url 'note:delete' file.name %}" method="get">
                 {% csrf_token %}

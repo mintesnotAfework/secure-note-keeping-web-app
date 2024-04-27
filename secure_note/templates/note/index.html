@@ -20,14 +20,14 @@
         <div class="user-info">
             <a href="{% url 'authentication:update' %}">
                 <img src="{{ user_password.profile_picture.url }}" alt="profile picture" class="user-icon">
-                <span id="user-name">{{request.user.username||safe}}</span>
+                <span id="user-name">{{request.user.username|escapejs}}</span>
             </a>
         </div>
         <ul class="note-list">
             {% if list_of_file %}
                 {% for item in list_of_file %}
                 <a href="{% url 'note:file_display' item.name %}">
-                    <li>{{ item.name ||safe}}</li>
+                    <li>{{ item.name |escapejs}}</li>
                 </a>
                 {% empty %}
                     <li> No Note </li>
