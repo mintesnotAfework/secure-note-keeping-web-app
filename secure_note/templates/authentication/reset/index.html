@@ -38,11 +38,11 @@
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Firstname" name="firstname" lable="First name" minlength="5"  maxlength="64" value={{user.first_name||safe}} required />
+              <input type="text" placeholder="Firstname" name="firstname" lable="First name" minlength="5"  maxlength="64" value={{user.first_name||safe}} pattern="[a-zA-Z]+" required />
             </div>
             <div class="input-field">
               <i class="fas fa-user"></i>
-              <input type="text" placeholder="Lastname" name="lastname" lable="Last name" minlength="5" maxlength="64" value={{user.last_name||safe}} required/>
+              <input type="text" placeholder="Lastname" name="lastname" lable="Last name" minlength="5" maxlength="64" value={{user.last_name||safe}} pattern="[a-zA-Z]+" required/>
             </div>
             <div class="input-field">
               <i class="fas fa-envelope"></i>
