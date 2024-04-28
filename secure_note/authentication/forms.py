@@ -22,3 +22,6 @@ class UpdateForm(forms.Form):
 class PasswordResetForm(forms.Form):
     password1 = forms.CharField(max_length=50,min_length=8,required=True)
     password2 = forms.CharField(max_length=50,min_length=8,required=True)
+
+class ForgetForm(forms.Form):
+    email = forms.EmailField(max_length=320,min_length=5)
