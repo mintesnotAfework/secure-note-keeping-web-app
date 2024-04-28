@@ -13,4 +13,4 @@ RUN chmod 755  /etc/nginx -R
 RUN openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout /etc/nginx/ssl/secure_note.key -out /etc/nginx/ssl/secure_note.crt -subj "/C=ET/ST=Amhara/L=Bahir Dar/O=Bahir dar/CN=mintesnot.afework"
 
 RUN apk del .tmp
-USER nginx
+# USER nginx
