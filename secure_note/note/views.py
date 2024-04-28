@@ -1,11 +1,11 @@
 from django.shortcuts import render
-from django.http import HttpResponsePermanentRedirect,Http404
+from django.http import HttpResponsePermanentRedirect,Http404,HttpResponseBadRequest
 from django.urls import reverse
 from .forms import SaveForm
 from .models import FileModel
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-from . import cryptoengine
+from secure_note.user_defined import cryptoengine, recovery
 from authentication.models import UserProfile
 
 
@@ -38,7 +38,13 @@ class SaveFile(LoginRequiredMixin,View):
                 if check_validaty:
                     m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 else:
-                    pass
+                    user_password = recovery.Recover.RegenerateAESKey(requests.user,user_password)
+                    aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
+                    check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
+                    if check_validaty:
+                        m.content = cryptoengine.AESCryptography.encryption(aes_password.file_content.encode())
+                    else:
+                        return HttpResponseBadRequest()
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
                 m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
                 m.save()
@@ -51,7 +57,13 @@ class SaveFile(LoginRequiredMixin,View):
                 if check_validaty:
                     m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 else:
-                    pass
+                    user_password = recovery.Recover.RegenerateAESKey(requests.user,user_password)
+                    aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
+                    check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
+                    if check_validaty:
+                        m.content = cryptoengine.AESCryptography.encryption(aes_password.file_content.encode())
+                    else:
+                        return HttpResponseBadRequest()
                 m.user = requests.user
                 m.sha256_hash = cryptoengine.MessageDigest.sha256_hash(file_content)
                 m.md5_hash = cryptoengine.MessageDigest.md5_hash(file_content)
@@ -72,7 +84,13 @@ class FileDisplayView(LoginRequiredMixin,View):
         if check_validaty:
             content = cryptoengine.AESCryptography.decryption(file.content,aes_password)
         else:
-            pass
+            user_password = recovery.Recover.RegenerateAESKey(requests.user,user_password)
+            aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
+            check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
+            if check_validaty:
+                content = cryptoengine.AESCryptography.encryption(aes_password.file_content.encode())
+            else:
+                return HttpResponseBadRequest()
         return render(requests,"note/index2.html",{"file":file,"list_of_file":list_of_files,"content":content.decode(),"user_password":user_password})
 
 
