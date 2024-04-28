@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponsePermanentRedirect,Http404
-from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm
+from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm,ForgetForm
 from django.urls import reverse
 from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.models import User
@@ -71,7 +71,7 @@ class RegistrationView(View):
                 else:
                     message = "Username is taken"
         else:
-            message = registeration_form.errors
+            message = registeration_form.errors.as_text()
         return render(requests,"authentication/login/index.html",{"message":message,})
 
 class LogoutView(LoginRequiredMixin,View):
@@ -103,7 +103,7 @@ class PasswordRestView(LoginRequiredMixin,View):
             elif requests.POST.get("password1") == "":
                 message = "The password field is required"
         else:
-            message = password_reset_form.errors
+            message = password_reset_form.errors.as_text()
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
         return render(requests,"authentication/reset/index.html",{"message":message,"user":user,"user_profile":user_profile})
@@ -130,7 +130,7 @@ class UpdateView(LoginRequiredMixin,View):
             user.save()
             user_profile.save()
             return HttpResponsePermanentRedirect(reverse("note:index",))
-        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors})
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors.as_text()})
 
 
 class ForgetView(View):
@@ -138,7 +138,13 @@ class ForgetView(View):
         return render(requests,"authentication/forget/index.html")
 
     def post(self,requests):
-        return HttpResponsePermanentRedirect(reverse("authentication:index",))
+        forget_form = ForgetForm(data=requests.POST)
+        if forget_form.is_valid():
+            return HttpResponsePermanentRedirect(reverse("authentication:index",))
+        else:
+            message = forget_form.errors.as_text()
+            return render(requests,"authentication/forget/index.html",{"message":message})
+        
     
 
 class AboutView(View):
