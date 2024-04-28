@@ -1,7 +1,7 @@
 from authentication.models import UserProfile
 from django.contrib.auth.models import User
 from note.models import FileModel
-from secure_note.user_defined import cryptoengine
+from user_defined import cryptoengine
 import random
 
 
