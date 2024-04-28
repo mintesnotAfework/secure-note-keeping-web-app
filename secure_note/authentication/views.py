@@ -4,11 +4,11 @@ from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm,Forge
 from django.urls import reverse
 from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.models import User
-from secure_note.user_defined.validation import validate_password,is_all_char,is_all_char_num
+from user_defined.validation import validate_password,is_all_char,is_all_char_num
 from django.views import View
 from django.contrib.auth.mixins import LoginRequiredMixin
 from authentication.models import UserProfile
-from secure_note.user_defined import cryptoengine
+from user_defined import cryptoengine
 import random
 
 

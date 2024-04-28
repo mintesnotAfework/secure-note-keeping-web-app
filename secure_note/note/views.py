@@ -5,7 +5,7 @@ from .forms import SaveForm
 from .models import FileModel
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
-from secure_note.user_defined import cryptoengine, recovery
+from user_defined import cryptoengine, recovery
 from authentication.models import UserProfile
 
 
