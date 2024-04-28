@@ -38,7 +38,7 @@ class SaveFile(LoginRequiredMixin,View):
                 if check_validaty:
                     m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 else:
-                    user_password = recovery.Recover.RegenerateAESKey(requests.user,user_password)
+                    user_password = recovery.Recover.regenerateAESKey(requests.user,user_password)
                     aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
                     check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
                     if check_validaty:
@@ -57,7 +57,7 @@ class SaveFile(LoginRequiredMixin,View):
                 if check_validaty:
                     m.content = cryptoengine.AESCryptography.encryption(aes_password,file_content.encode())
                 else:
-                    user_password = recovery.Recover.RegenerateAESKey(requests.user,user_password)
+                    user_password = recovery.Recover.regenerateAESKey(requests.user,user_password)
                     aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
                     check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
                     if check_validaty:
@@ -84,7 +84,7 @@ class FileDisplayView(LoginRequiredMixin,View):
         if check_validaty:
             content = cryptoengine.AESCryptography.decryption(file.content,aes_password)
         else:
-            user_password = recovery.Recover.RegenerateAESKey(requests.user,user_password)
+            user_password = recovery.Recover.regenerateAESKey(requests.user,user_password)
             aes_password = cryptoengine.RSACryptography.decryption(user_password.file_path,user_password.hashed_password)
             check_validaty = cryptoengine.RSACryptography.verify_sign(aes_password,user_password.signed_password)
             if check_validaty:

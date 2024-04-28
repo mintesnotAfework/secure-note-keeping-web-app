@@ -7,7 +7,7 @@ import random
 
 class Recover:
     @staticmethod
-    def RegenerateAESKey(user: User,userprofile:UserProfile) -> UserProfile:
+    def regenerateAESKey(user: User,userprofile:UserProfile) -> UserProfile:
         random_value = str(random.randbytes(10))
         aes_key = cryptoengine.AESCryptography.key_generation(random_value)
         if userprofile.previous_hashed_password is not None:
