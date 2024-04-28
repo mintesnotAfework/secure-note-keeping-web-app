@@ -3,7 +3,6 @@ from django.contrib.auth.models import User
 from note.models import FileModel
 from secure_note.user_defined import cryptoengine
 import random
-import os
 
 
 class Recover:
