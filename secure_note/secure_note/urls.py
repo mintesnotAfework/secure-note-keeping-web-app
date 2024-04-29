@@ -21,7 +21,7 @@ from django.conf.urls.static import static
 
 app_name = "main"
 urlpatterns = [
-    # path('admin/', admin.site.urls,name="admin"),
+    path('admin/', admin.site.urls,name="admin"),
     path('',include('authentication.urls'),name="index"),
     path("note/",include("note.urls"),name="note"),
 ] 
