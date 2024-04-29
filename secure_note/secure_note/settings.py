@@ -144,3 +144,16 @@ LANGUAGE_COOKIE_HTTPONLY = True
 
 # SECURE_SSL_REDIRECT = True
 # SECURE_PROXY_SSL_HEADER = True
+
+
+##########################################
+#
+#      Email configuration 
+#
+##########################################
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 517
+EMAIL_USE_TLS = True
+EMAIL_USER = os.environ.get("EMAIL_USER")
+EMAIL_PASSWORD = os.environ.get("EMAIL_PASSWORD")
