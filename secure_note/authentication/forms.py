@@ -13,10 +13,11 @@ class RegistrationForm(forms.Form):
     lastname = forms.CharField(max_length=64,min_length=5,required=True)
 
 class UpdateForm(forms.Form):
-    email = forms.EmailField(max_length=320,min_length=5)
+    profile_picture = forms.ImageField(required=True)
     firstname = forms.CharField(max_length=64,min_length=5,required=True)
     lastname = forms.CharField(max_length=64,min_length=5,required=True)
-    profile_picture = forms.ImageField(required=True)
+    email = forms.EmailField(max_length=320,min_length=5,required=True)
+
 
 
 class PasswordResetForm(forms.Form):

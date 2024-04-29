@@ -119,17 +119,18 @@ class UpdateView(LoginRequiredMixin,View):
     def post(self,requests):
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
-        update_form = UpdateForm(data=requests.POST)
-        if not is_all_char(requests.POST["firstname"] + requests.POST["lastname"]):
-            return Http404()
-        elif update_form.is_valid():
-            user.first_name = requests.POST.get("firstname")
-            user.last_name = requests.POST.get("lastname")
-            user.email = requests.POST.get("email")
-            user_profile.profile_picture = requests.FILES['profile_picture']
-            user.save()
-            user_profile.save()
-            return HttpResponsePermanentRedirect(reverse("note:index",))
+        update_form = UpdateForm(requests.POST,requests.FILES)
+        if update_form.is_valid():
+            if not is_all_char(requests.POST["firstname"]) and not is_all_char(requests.POST["lastname"]):
+                return Http404()
+            else:
+                user.first_name = requests.POST.get("firstname")
+                user.last_name = requests.POST.get("lastname")
+                user.email = requests.POST.get("email")
+                user_profile.profile_picture = requests.FILES['profile_picture']
+                user.save()
+                user_profile.save()
+                return HttpResponsePermanentRedirect(reverse("note:index",))
         return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors.as_text()})
 
 
