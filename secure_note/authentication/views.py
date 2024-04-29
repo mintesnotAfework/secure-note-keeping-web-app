@@ -117,6 +117,7 @@ class UpdateView(LoginRequiredMixin,View):
         return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
 
     def post(self,requests):
+        message = ""
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
         update_form = UpdateForm(requests.POST,requests.FILES)
@@ -131,7 +132,9 @@ class UpdateView(LoginRequiredMixin,View):
                 user.save()
                 user_profile.save()
                 return HttpResponsePermanentRedirect(reverse("note:index",))
-        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors.as_text()})
+        else:
+            message = "Invalid Input Make sure You use the right Thing"
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors.as_text(),"message":message})
 
 
 class ForgetView(View):

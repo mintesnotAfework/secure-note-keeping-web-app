@@ -16,6 +16,14 @@
             <h2 class="title">Reset Password</h2>
               <div class="input-field">
                 <i class="fas fa-user"></i>
+                <p style="color: red;" style="font-weight: bold;"> 
+                  {% if message %}
+                    {{ message }}
+                  {% endif %}
+                  {% if form  %}
+                    {{ form }}
+                  {% endif %}
+                  </p> 
                 <input type="password" placeholder="password" name="password1" minlength="8" maxlength="50" required/>
               </div>
               <div class="input-field">
