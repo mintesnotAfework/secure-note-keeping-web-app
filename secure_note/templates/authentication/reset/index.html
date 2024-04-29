@@ -14,16 +14,16 @@
           <form action="{% url 'authentication:password_reset' %}" method='post' class="sign-in-form">
             {% csrf_token %}
             <h2 class="title">Reset Password</h2>
-              <div class="input-field">
-                <i class="fas fa-user"></i>
-                <p style="color: red;" style="font-weight: bold;"> 
-                  {% if message %}
+            <p style="color: red;" style="font-weight: bold;"> 
+                {% if message %}
                     {{ message }}
-                  {% endif %}
-                  {% if form  %}
+                {% endif %}
+                {% if form  %}
                     {{ form }}
-                  {% endif %}
-                  </p> 
+                {% endif %}
+              </p>
+              <div class="input-field">
+                <i class="fas fa-user"></i> 
                 <input type="password" placeholder="password" name="password1" minlength="8" maxlength="50" required/>
               </div>
               <div class="input-field">
