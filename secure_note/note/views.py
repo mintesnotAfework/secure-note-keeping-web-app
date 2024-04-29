@@ -13,7 +13,10 @@ class IndexView(LoginRequiredMixin,View):
     login_url="/login/"
     def get(self,requests):
         list_of_file = FileModel.objects.filter(user=requests.user)
-        user_profile = UserProfile.objects.get(user_user = requests.user)
+        try:
+            user_profile = UserProfile.objects.get(user_user = requests.user)
+        except:
+            return HttpResponsePermanentRedirect(reverse("authentication:logout"))
         return render(requests,"note/index.html",{"list_of_file":list_of_file,"user_password":user_profile})
     
 
