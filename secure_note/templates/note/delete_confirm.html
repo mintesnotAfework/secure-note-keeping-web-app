@@ -10,9 +10,9 @@
 <body>
   <div class="container">
     <ul>
-      <li>File-Name : {{file.name||safe}}</li>
-      <li>Creation-Data : {{file.date_time||safe}}</li>
-      <li>Owner : {{ file.user.username||safe }}</li>
+      <li>File-Name : {{file.name|escapejs}}</li>
+      <li>Creation-Data : {{file.date_time|escapejs}}</li>
+      <li>Owner : {{ file.user.username|escapejs }}</li>
     </ul>
     <form method="post" action="{% url 'note:delete' file.name %}">
       {% csrf_token %}
