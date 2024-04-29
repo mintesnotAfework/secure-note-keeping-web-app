@@ -16,13 +16,21 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path,include
+from django.contrib.auth import views
 from django.conf import settings
 from django.conf.urls.static import static
 
-app_name = "main"
 urlpatterns = [
     path('admin/', admin.site.urls,name="admin"),
-    path('',include('authentication.urls'),name="index"),
+    path("password-reset/", 
+         views.PasswordResetView.as_view(template_name="authentication/forget/password_reset.html"),
+         name="password_reset"),
+    path("password-reset/done/", 
+         views.PasswordResetDoneView.as_view(template_name="authentication/forget/password_reset_done.html"),
+         name="password_reset_done"),
+    # path(),
+    # path(),
+    path('',include('authentication.urls'),name="authentication"),
     path("note/",include("note.urls"),name="note"),
 ] 
 
