@@ -7,6 +7,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views import View
 from user_defined import cryptoengine, recovery
 from authentication.models import UserProfile
+from authentication.forms import CaptchaForm
 
 
 class IndexView(LoginRequiredMixin,View):
@@ -99,11 +100,16 @@ class FileDisplayView(LoginRequiredMixin,View):
 
 class DeleteFileView(LoginRequiredMixin,View):
     login_url = "/login/"
-    def get(self,requests,name):   
+    def get(self,requests,name): 
+        form = CaptchaForm()  
         file = FileModel.objects.filter(user = requests.user).get(name=name)
-        return render(requests,"note/delete_confirm.html",{"file":file})
+        return render(requests,"note/delete_confirm.html",{"file":file,"form":form})
     
     def post(self,requests,name):
-        file = FileModel.objects.filter(user = requests.user).get(name=name)
-        file.delete()
+        form = CaptchaForm(data=requests.POST)
+        if form.is_valid():
+            file = FileModel.objects.filter(user = requests.user).get(name=name)
+            file.delete()
+        else:
+            return render(requests,"note/delete_confirm.html",{"file":file,"form":CaptchaForm()})
         return HttpResponsePermanentRedirect(reverse("note:index"))

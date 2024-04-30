@@ -27,6 +27,7 @@
               <a href="{% url 'authentication:login' %}" style="color: blue;" style="font-weight: bold;"> 
                 Login Page
               </a>
+              {{ form.as_p }}
               <a href="{% url 'password_reset' %}" style="color: red;" style="font-weight: bold;"> 
                 Reset password using Link
               </a>

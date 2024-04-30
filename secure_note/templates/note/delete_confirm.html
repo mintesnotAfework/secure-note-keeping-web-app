@@ -18,6 +18,7 @@
     </ul>
     <form method="post" action="{% url 'note:delete' file.name %}">
       {% csrf_token %}
+      {{ form.as_p }}
       <button id="delete">Delete</button>
     </form>
     <form method="get" action="{% url 'note:file_display' file.name %}">

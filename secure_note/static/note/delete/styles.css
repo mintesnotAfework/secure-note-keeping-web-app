@@ -20,7 +20,6 @@ body{
 }
 
 .container button {
-  display: inline-block;
   flex-direction: row;
   margin: 5px;
   padding: 10px 20px;
@@ -33,7 +32,6 @@ body{
   background-color:darkgreen;
 }
 button{
-  display: inline-block;
   flex-direction: row;
 }
 

@@ -1,6 +1,6 @@
 from django.shortcuts import render
 from django.http import HttpResponsePermanentRedirect,Http404
-from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm,ForgetForm
+from .forms import LoginForm,RegistrationForm,UpdateForm,PasswordResetForm,ForgetForm,CaptchaForm
 from django.urls import reverse
 from django.contrib.auth import logout,login,authenticate
 from django.contrib.auth.models import User
@@ -20,7 +20,8 @@ class Index(LoginRequiredMixin,View):
 
 class LoginView(View):
     def get(self,requests):
-        return render(requests,"authentication/login/index.html")
+        form = CaptchaForm()
+        return render(requests,"authentication/login/index.html",{"form":form})
     
     def post(self,requests):
         login_form = LoginForm(data=requests.POST)
@@ -37,7 +38,8 @@ class LoginView(View):
 
 class RegistrationView(View):
     def get(self,requests):
-        return render(requests,"authentication/login/index.html")
+        form = CaptchaForm()
+        return render(requests,"authentication/login/index.html",{"form":form})
 
     def post(self,requests):
         registeration_form = RegistrationForm(data=requests.POST)
@@ -75,7 +77,7 @@ class RegistrationView(View):
                     message = "Username is taken"
         else:
             message = registeration_form.errors.as_text()
-        return render(requests,"authentication/login/index.html",{"message":message,})
+        return render(requests,"authentication/login/index.html",{"message":message,"form":CaptchaForm()})
 
 class LogoutView(LoginRequiredMixin,View):
     login_url="/login/"
@@ -86,9 +88,10 @@ class LogoutView(LoginRequiredMixin,View):
 class PasswordRestView(LoginRequiredMixin,View):
     login_url = "/login/"
     def get(self,requests):
+        form = CaptchaForm()
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
-        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":form})
     
     def post(self,requests):
         password_reset_form = PasswordResetForm(data=requests.POST)
@@ -109,15 +112,16 @@ class PasswordRestView(LoginRequiredMixin,View):
             message = password_reset_form.errors.as_text()
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
-        return render(requests,"authentication/reset/index.html",{"message":message,"user":user,"user_profile":user_profile})
+        return render(requests,"authentication/reset/index.html",{"message":message,"user":user,"user_profile":user_profile,"form":CaptchaForm()})
 
 
 class UpdateView(LoginRequiredMixin,View):
     login_url = "/login/"
     def get(self,requests):
+        form = CaptchaForm()
         user = User.objects.get(id = requests.user.id)
         user_profile = UserProfile.objects.get(user_user = user)
-        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile})
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":form})
 
     def post(self,requests):
         message = ""
@@ -137,12 +141,13 @@ class UpdateView(LoginRequiredMixin,View):
                 return HttpResponsePermanentRedirect(reverse("note:index",))
         else:
             message = "Invalid Input Make sure You use the right Thing"
-        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"form":update_form.errors.as_text(),"message":message})
+        return render(requests,"authentication/reset/index.html",{"user":user,"user_profile":user_profile,"message1":update_form.errors.as_text(),"message":message,"form":CaptchaForm()})
 
 
 class ForgetView(View):
     def get(self,requests):
-        return render(requests,"authentication/forget/index.html")
+        form = CaptchaForm()
+        return render(requests,"authentication/forget/index.html",{"form",form})
 
     def post(self,requests):
         forget_form = ForgetForm(data=requests.POST)
@@ -150,7 +155,7 @@ class ForgetView(View):
             return HttpResponsePermanentRedirect(reverse("authentication:index",))
         else:
             message = forget_form.errors.as_text()
-            return render(requests,"authentication/forget/index.html",{"message":message})
+            return render(requests,"authentication/forget/index.html",{"message":message,"form":CaptchaForm()})
         
     
 

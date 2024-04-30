@@ -38,5 +38,8 @@ urlpatterns = [
     path("note/",include("note.urls"),name="note"),
 ] 
 
+urlpatterns += [
+    path('captcha/', include('captcha.urls')),
+]
 urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT) #static file addition from the setting file indjango 
 urlpatterns += static(settings.MEDIA_URL,document_root=settings.MEDIA_ROOT) #media file addition from the setting file indjango 
