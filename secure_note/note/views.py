@@ -107,9 +107,10 @@ class DeleteFileView(LoginRequiredMixin,View):
     
     def post(self,requests,name):
         form = CaptchaForm(data=requests.POST)
+        file = FileModel.objects.filter(user = requests.user).get(name=name)
         if form.is_valid():
-            file = FileModel.objects.filter(user = requests.user).get(name=name)
             file.delete()
         else:
-            return render(requests,"note/delete_confirm.html",{"file":file,"form":CaptchaForm()})
+            form = CaptchaForm()
+            return render(requests,"note/delete_confirm.html",{"file":file,"form":form})
         return HttpResponsePermanentRedirect(reverse("note:index"))
