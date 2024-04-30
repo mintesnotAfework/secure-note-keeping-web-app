@@ -6,8 +6,8 @@ services:
       - static_data:/vol/web
     environment:
       - SECRET_KEY=SAMPLEKEY
-      - EMAIL_USER = example@gmail.com
-      - EMAIL_PASSWORD = 1234123
+      - EMAIL_USER = mintesnotafework12@gmail.com
+      - EMAIL_PASSWORD = password
     depends_on:
       - pgdb
   
