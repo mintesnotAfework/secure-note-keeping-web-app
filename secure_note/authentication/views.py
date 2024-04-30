@@ -147,7 +147,7 @@ class UpdateView(LoginRequiredMixin,View):
 class ForgetView(View):
     def get(self,requests):
         form = CaptchaForm()
-        return render(requests,"authentication/forget/index.html",{"form",form})
+        return render(requests,"authentication/forget/index.html",{"form":form})
 
     def post(self,requests):
         forget_form = ForgetForm(data=requests.POST)
