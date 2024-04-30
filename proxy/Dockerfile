@@ -4,7 +4,7 @@ COPY ./default.conf /etc/nginx/conf.d/default.conf
 COPY ./uwsgi_params /etc/nginx/uwsgi_params
 
 USER root
-RUN apk add --update --no-chahe --virtual .tmp openssl
+RUN apk add --update --no-cache --virtual .tmp openssl
 RUN mkdir -p /vol/static
 RUN chmod -R 755 /vol/static
 RUN mkdir -p /etc/nginx/ssl
