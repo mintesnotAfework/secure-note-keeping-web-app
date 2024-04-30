@@ -33,7 +33,7 @@ class LoginView(View):
                 login(requests,user)
                 return HttpResponsePermanentRedirect(reverse("note:index",))
         message = "Invalid username or password"
-        return render(requests,"authentication/login/index.html",{"message" : message})
+        return render(requests,"authentication/login/index.html",{"message" : message,"form":CaptchaForm()})
 
 
 class RegistrationView(View):
